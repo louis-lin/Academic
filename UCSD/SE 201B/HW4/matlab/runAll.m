@@ -1,0 +1,10 @@
+addpath('.\function');
+% run_opensees(".\static_EW_force\run.tcl");
+% run_opensees(".\static_EW_disp\run.tcl");
+% run_opensees(".\static_EW_lin\run.tcl");
+% run_opensees(".\static_NS_force\run.tcl");
+% run_opensees(".\dynamic_EW\run.tcl");
+% run_opensees(".\dynamic_EW_kcommit\run.tcl");
+% run_opensees(".\dynamic_EWNS\run.tcl");
+% run_opensees(".\dynamic_EW_lin\run.tcl");
+% run_opensees(".\dynamic_EW_dt\run.tcl");

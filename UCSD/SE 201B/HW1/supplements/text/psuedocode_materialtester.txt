@@ -1,0 +1,18 @@
+Mate25n
+
+% Initialize Material Properties
+> E, fy,  b, R0, cR1, cR2, a1, a2
+
+% Initialize State
+> Set all of these State.Present. Et, ey, initial_stress, etc
+> State.past = State.Present
+> Initialize the strain data at iteration 1
+
+% Given the stain data
+> strain_data = []
+> for 1:numel(strain_data)
+	> set the state.eps = strain_data(n)
+	> If statement to catch the first case otherwise Δε = ε(n) - ε(n-1) 
+	> Run Mate25n with MatData and the current state; returns the next converged state
+	> Save the state data to plot (strain, stress)
+	> Set the "past" converged state to current state

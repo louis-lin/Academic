@@ -1,0 +1,58 @@
+% Define Structural Parameters
+> Define Length
+> Define area
+
+% Initialized Structural State
+> Set the initial displacement to 0
+> Set the total incremental displacement
+> Set last incremental displacement
+
+% Define Material Model Constitutive Parameters
+> E
+> fy
+> b
+> Ro
+> cR1, cR2, a1, a2
+
+% Initialize Material State
+> Et; initial tangent modulus
+> ey;
+> sig;
+> etc etc etc
+
+% Initialized Past State
+> State.Past = State.Present
+
+% Initialize Strain Inside Material
+> Initialize State.eps
+
+% Initialize Loads
+> P = []
+> U =[]
+
+%Iterate Over Load Steps
+> for n = 1:numel(P)
+	> convergence = FALSE; % For every load step, convergence hasn't happened yet
+	> max_constitutive_iterations = 20; % In case there is no convergence
+	> constitutive_counter = 1; % To count up the iterations thus far
+
+	> while (constitutive_counter <= max_constitutive_iterations) &&(convergence == FALSE)
+		> Find the state using the MP model
+		> Find the total internal force
+		> Find the residual by taking the next load step minus the current internal force
+		
+		> If abs(residual) < tolerance
+			> convergence = TRUE
+			> Save the current structural displacement
+			> Reset the incremental displacement change for this convergence
+			> Reset the total displacement change for this convergence
+			> Reset the incremental strain change for this convergence
+			> Reset the total strain change for this convergence
+		> else % Not Converged ... 
+			> Calc. tangent siffness
+			> Calculate incremental displacement change (δU = K_tan * Residual) : (hori = slope*vert)
+			> Add the change to the accumulated iteration displacement change ΔU = ΔU + δU 
+			> Add the change to the overall structural displacement U = U + δU
+
+			> Set the all the strain values using consitutive law U=Lε
+			> Increment the iteration counter

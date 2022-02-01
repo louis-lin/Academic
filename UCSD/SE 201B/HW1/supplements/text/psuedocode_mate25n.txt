@@ -1,0 +1,40 @@
+function State = Mat25n (MatData, State)
+% Enter with state of the material, 
+
+% Extract material properties
+> E, fy,  b, R0, cR1, cR2, a1, a2
+> E1 = b*E0
+> ey = fy/E;
+
+% Retrieve variables of last converged state
+> Set max strain;  epm = max(abs(ep_min),abs(ep_max))
+> Set total strain at current iteration; epss = State.eps(1,1)
+> Set total strain incremenet from last convergence; depss = State.eps(1,2)
+
+> If the shape is new; % first starting out ...
+	> If the change in strain is 0
+		> Initialize the stress and tangent modulus as 0 and E
+	> If the change in strain is positive
+		> Kon = 1; % Consider it branch 1
+		> Set the intersection of the two lines: ep0, s0, epex
+		> Call Bauschinger
+	> If the change in stain is ngeative
+		> Kon = 2; % Consider it branch 2
+		> Set the intersection of the two lines: -ep0, -s0, epex= -epm
+> Else % It's damages
+	> If moving right on branch 1 or moving left on branch 2
+		>Call Buaschinger's equation
+	> Elseif on branch 1 and moving to the left
+		> Move to branch 2
+		> Update reversal point
+		> Calculate the
+	 
+
+
+Basuchinger
+> Computer ξ; % Ratio of maximum plastic strain over the initial yield strain eq (11)
+> Compute R; % Radius of curvature for curve
+> e_star = % Normalized strain to previous yield point
+> s_star = % Noamlized stress to previous yield point
+> Calculate dSdE
+> Return Et = dSdE* s_star
