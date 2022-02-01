@@ -1,0 +1,35 @@
+Initialize Model
+> Branch = 3
+> max_strain = 0; max_stress = 0;
+> min_strain = -ey; min_strain = -fy;
+
+For i = 1:length(strain_data)
+delta_strain = strain_data(i) - strain_data(i-1)
+
+If branch == 1 || branch == 3
+	If min_strain <= strain_data(i) && strain_data(i) max_strain
+		stress(i) = Es* (strain_data(i) - min_strain) + min_stress
+	Else
+		If delta_strain >0
+			Branch = 2
+			min_strain = strain_data(i)
+		If delta_strain < 0
+			Branch = 4
+
+If branch ==2 && delta_strain >=0  || branch ==4 delta_strain < 0 
+	stress(i) = r* Es* (strain_data(i) - min_strain) + min_stress
+Else
+	If branch == 4 && delta_strain >0
+		branch = 1
+		min_strain = strain(i-1)
+		min_stress = stress(i-1)
+		max_strain = min_strain + 2*ey
+		max_stress = min_stress + 2*fy
+		stress(i) = Es* (strain_data(i) - min_strain) + min_stress
+	If branch == 2 && delta_strain <0 
+		branch = 3
+		max_strain = strain(i-1)
+		max_stress = stress(i-1)
+		min_strain = max_strain - 2*ey
+		min_stress = max_stress - 2*fy
+		stress(i) = Es* (strain_data(i) - min_strain) + min_stress

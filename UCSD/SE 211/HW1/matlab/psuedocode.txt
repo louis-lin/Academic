@@ -1,0 +1,31 @@
+% Initialize model
+% Branch = 3
+% Max strain/stress should be 0,0
+% Min strain/stress should be -ey,-fy
+
+% For all of the test strains
+% Calculate the delta strain 
+% If you're on (branch 1) or (branch 3)
+	% If (strain is between the min and max strains)
+		% Calculate the stress
+	% Else
+		% If you're moving to the right,
+			% Go to branch 2
+			% Set the min stress/strain as the current point
+		% If you're moving to the left
+			% Go to branch 4
+
+% If you're on (branch 2 and moving to the right) or (branch 4 and moving to the left)
+	% Calculate the stress
+% Else
+	% If you're on (branch 4) and (moving to the right)
+		% Go to branch 1
+		% Set the min strain/stresses to the previously computed point
+		% Set the max strain/stress to be min strain/stress + 2*ey and +2*fy 
+		% Set the current stress = the stress as if you're on branch 1
+	% If you're on (branch 2) and (moving to the left)
+		% Go to branch 3
+		% Set the max strain/stress to the previously computed point
+		% Set the min strain/stress to be the max strain/stress - 2*ey and -2*fy away
+		% Set the current stress = the stress as if you're on branch 3
+		

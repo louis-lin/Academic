@@ -1,0 +1,55 @@
+%         if branch == 2
+            model_stress(index) = r*Es * (model_strain(index) - strain_min) + stress_min; % branch 2 or 4
+%         elseif branch == 4
+%             model_stress(index) = 1/(r*Es) * (model_strain(index) - strain_min) + stress_min; % branch 4
+%         end
+
+%             model_stress(index) = r*Es * (model_strain(index) - strain_min) + stress_min; % stress function
+%             strain_max = model_strain(index);  stress_max = model_stress(index);
+%             stress_min = -model_stress(index); strain_min = strain_max - abs(2*model_stress(index)/Es);
+
+
+[model_strain, model_stress] = deal(zeros(numel(test_strain),1));
+strain_max = 0; stress_max = 0;
+strain_min = -ey; stress_min = -fy;
+branch = 3; 
+end_no = 273;
+for index = 2:end_no
+    delta_strain = test_strain(index) - test_strain(index -1);
+    model_strain(index) = test_strain(index);     
+    if branch == 1 || branch == 3
+        if strain_min <= model_strain(index) && model_strain(index) <= strain_max % fprintf("On Branch %i\n",branch);
+            model_stress(index) = Es * (model_strain(index)-strain_max) + stress_max; % branch 1 or 3
+        else
+            if model_strain(index) > strain_max % disp("Moving Branch 1 -> 2");
+                branch = 2;
+                model_stress(index) = Es * (model_strain(index)-strain_max) + stress_max ;  % need to fix to be on branch 2
+                [strain_min, stress_min] = deal(model_strain(index) , model_stress(index)) ;
+            elseif model_strain(index) < strain_min % disp("Moving Branch 3 -> 4");
+                branch = 4;
+                model_stress(index) = Es * (model_strain(index)-strain_min) + stress_min; % need to fix to be on branch 4
+                [strain_max, stress_max] = deal(model_strain(index) , model_stress(index)) ;
+            end
+        end          
+    end
+    
+    if (branch == 2 && delta_strain > 0) || (branch == 4 && delta_strain < 0) % fprintf("On Branch %i\n",branch);
+        model_stress(index) = r*Es*(model_strain(index) - strain_min) + stress_min; % branch 2 or 4
+    else 
+        if delta_strain >= 0 && branch ~= 1 % disp("Moving Branch 4 -> 1");
+            branch = 1;
+            strain_min = model_strain(index -1 ); stress_min = model_stress(index-1);
+            stress_max = -model_stress(index-1); strain_max = strain_min + abs(2*model_stress(index-1)/Es);
+            model_stress(index) = r*Es * (model_strain(index) - strain_min) + stress_min; % stress function            
+        elseif delta_strain < 0 && branch ~= 3 % disp("Moving Branch 2 -> 3");
+            branch = 3;
+            strain_max = model_strain(index -1 ); stress_max = model_stress(index-1);
+            stress_min = -model_stress(index-1); strain_min = strain_max - abs(2*model_stress(index-1)/Es);
+            model_stress(index) = r*Es * (model_strain(index) - strain_max) + stress_max; % stress function  
+        end
+    end
+end
+
+close all; range = 1:end_no;
+plot_model(model_strain,model_stress,range,"Isotropic Hardening Bi-Linear Model"); plot_model(test_strain, test_stress,range,"Experimental Data"); 
+grid minor
