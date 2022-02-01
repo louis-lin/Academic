@@ -2,7 +2,8 @@
 **Objective**: Posting academic works done during UCSD
 
 
-## Current Course
+## Courses
+Being uploaded
 ### Structural Analysis Courses
 ```diff
 - SE 201A - Advanced Structural Analysis
